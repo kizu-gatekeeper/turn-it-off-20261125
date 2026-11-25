@@ -19,6 +19,8 @@ from pathlib import Path
 
 LINE = "Have you tried turning it off and on again? I ask because step two is pretending I know what step two is."
 
+ENTRY_FILENAME = "entry.txt"
+
 
 def write_entry(out_dir: Path) -> Path:
     """Write the tech support line to entry.txt inside out_dir and return
@@ -27,8 +29,10 @@ def write_entry(out_dir: Path) -> Path:
     The file holds exactly the line and nothing else: no trailing newline,
     no extra whitespace, so the gate sees one line of under 200 chars.
     """
+    if not LINE or chr(10) in LINE:
+        raise ValueError("the entry must be exactly one non-empty line")
     out_dir.mkdir(parents=True, exist_ok=True)
-    entry_path = out_dir / "entry.txt"
+    entry_path = out_dir / ENTRY_FILENAME
     entry_path.write_text(LINE, encoding="utf-8")
     return entry_path
 
